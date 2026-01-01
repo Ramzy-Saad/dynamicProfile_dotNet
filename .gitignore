@@ -1,0 +1,22 @@
+# Build results
+bin/
+obj/
+.vs/
+
+# Visual Studio
+*.suo
+*.user
+*.csproj.user
+
+# Logs
+*.log
+logs/
+
+# ASP.NET Core secrets
+appsettings.Development.json
+appsettings.Local.json
+secrets.json
+
+# OS
+.DS_Store
+Thumbs.db
