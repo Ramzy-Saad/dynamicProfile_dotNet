@@ -43,5 +43,44 @@ namespace RunGroupWebApp.Controllers
             return View(LoginViewModel);
         }
 
+        public ActionResult Register()
+        {
+            var response = new RegisterViewModel();
+            return View(response);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
+        {
+            if(!ModelState.IsValid) return View(registerViewModel);
+            var checkUser = await _userManager.FindByEmailAsync(registerViewModel.Email);
+            if(checkUser != null)
+            {
+                ModelState.AddModelError("Email", "This email already exists.");
+                return View(registerViewModel);
+            }
+            var newUser = new AppUser()
+            {
+                Email= registerViewModel.Email,
+                UserName = registerViewModel.Email
+            };
+            var newResponse  = await _userManager.CreateAsync(newUser, registerViewModel.Password);
+            if (newResponse.Succeeded)
+            {
+                await _userManager.AddToRoleAsync(newUser, UserRoles.User);
+                return RedirectToAction("Index", "Race");
+            }
+            foreach (var error in newResponse.Errors)
+            {
+                ModelState.AddModelError("", error.Description);
+            }
+
+            return View(registerViewModel);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index","Race");
+        }
     }
 }
