@@ -14,9 +14,17 @@
                             <p class="card-text">@item.Title</p>
                             <p class="card-text">@item.Description</p>
                             <div class="d-flex justify-content-between align-items-center">
-                                <div class="btn-group"> 
-                                    <a asp-controller="Race" asp-action="Detail" asp-route-id="@item.Id" class="btn btn-sm btn-outline-secondary">View</a>
-                                    <a asp-controller="Race" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-secondary">Edit</a>
+                                <div class="btn-group gap-2">
+                                    <a asp-controller="Race" asp-action="Detail" asp-route-id="@item.Id"
+                                        class="btn btn-sm btn-outline-secondary">View</a>
+                                    @if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
+                                    {
+                                        <a asp-controller="Race" asp-action="Edit" asp-route-id="@item.Id"
+                                            class="btn btn-sm btn-outline-secondary">Edit</a>
+                                        <form asp-area="" asp-controller="Race" asp-action="Delete" asp-route-id="@item.Id">
+                                            <button class="btn btn-sm btn-outline-danger rounded">Delete</button>
+                                        </form>
+                                    }
                                 </div>
                                 <small class="text-body-secondary">@item.RaceCategory</small>
                             </div>
@@ -26,8 +34,7 @@
             }
             <div class="col">
                 <div class="card shadow-sm">
-                    <a asp-controller="Race" asp-action="Create"
-                       class="btn btn-sm btn-outline-primary">Add +</a>
+                    <a asp-controller="Race" asp-action="Create" class="btn btn-sm btn-outline-primary">Add +</a>
                 </div>
             </div>
         </div>

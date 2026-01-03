@@ -85,7 +85,8 @@ namespace RunGroupWebApp.Controllers
             return View(raceVM);
         }
 
-          public async Task<IActionResult> Edit(int id, EditRaceViewModel raceVM )
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id, EditRaceViewModel raceVM )
         {
             if (!ModelState.IsValid)
             {
@@ -123,5 +124,17 @@ namespace RunGroupWebApp.Controllers
                 return View(raceVM);
             }
         }
+        public async Task<IActionResult> Delete(int id)
+        {
+            var userRace = await _raceRepository.GetByIdAsyncNoTracking(id);
+
+            if (userRace == null)
+            {
+                return NotFound();
+            }
+            _raceRepository.Delete(userRace);
+            return RedirectToAction("Index");
+        }
+
     }
 }

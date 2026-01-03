@@ -124,5 +124,18 @@ namespace RunGroupWebApp.Controllers
             }
 
         }
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var userClub = await _cLubRepository.GetByIdAsyncNoTracking(id);
+
+            if (userClub == null)
+            {
+                return NotFound();
+            }
+            _cLubRepository.Delete(userClub);
+            return RedirectToAction("Index");
+        }
+
     }
 }
