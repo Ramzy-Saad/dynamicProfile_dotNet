@@ -30,7 +30,13 @@ namespace RunGroupWebApp.Controllers
         }
         public IActionResult Create()
         {
-            return View();
+            var userId = User.GetUserID();
+            if (userId == null)
+            {
+                return View();
+            }
+            var createRaceViewModel = new CreateRaceViewModel { AppUserId = userId };
+            return View(createRaceViewModel);
         }
         [HttpPost]
         public async Task<IActionResult> Create(CreateRaceViewModel raceVM)
@@ -56,6 +62,7 @@ namespace RunGroupWebApp.Controllers
             {
                 Title = raceVM.Title,
                 Description = raceVM.Description,
+                AppUserId = raceVM.AppUserId,
                 Address = new Address
                 {
                     Street = raceVM.Address.Street,

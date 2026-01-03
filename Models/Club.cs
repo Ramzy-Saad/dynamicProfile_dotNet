@@ -17,9 +17,8 @@ namespace RunGroupWebApp.Models
         public Address Address { get; set; }
 
         public ClubCategory ClubCategory { get; set; }
-        [ForeignKey("AppUser")]
         public string? AppUserId { get; set; }
-        public string? AppUser { get; set; }
+        public AppUser? AppUser { get; set; }
 
 
 
