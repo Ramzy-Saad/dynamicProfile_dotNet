@@ -29,18 +29,18 @@ namespace RunGroupWebApp.Repository
             return await _context.Races.ToListAsync();
         }
 
-        public async Task<Race> GetByIdAsync(int id)
+        public async Task<Race?> GetByIdAsync(int id)
         {
             return await _context.Races.Include(r=> r.Address).FirstOrDefaultAsync(c => c.Id == id);
         }
-        public async Task<Race> GetByIdAsyncNoTracking(int id)
+        public async Task<Race?> GetByIdAsyncNoTracking(int id)
         {
-            return await _context.Races.Include(c => c.Address).AsNoTracking().FirstOrDefaultAsync(c => c.Id == id);
+            return await _context.Races.Include(c => c.Address!).AsNoTracking().FirstOrDefaultAsync(c => c.Id == id);
         }
 
         public async Task<IEnumerable<Race>> GetRaceByCity(string city)
         {
-            return await _context.Races.Where(c => c.Address.City == city).ToListAsync();
+            return await _context.Races.Where(c => c.Address!.City == city).ToListAsync();
         }
 
         public bool Save()

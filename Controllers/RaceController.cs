@@ -65,7 +65,7 @@ namespace RunGroupWebApp.Controllers
                 AppUserId = raceVM.AppUserId,
                 Address = new Address
                 {
-                    Street = raceVM.Address.Street,
+                    Street = raceVM.Address!.Street,
                     City = raceVM.Address.City,
                     State = raceVM.Address.State
                 },
@@ -82,10 +82,10 @@ namespace RunGroupWebApp.Controllers
             if (race == null) return View("Error");
             var raceVM = new EditRaceViewModel
             {
-                Title = race.Title,
-                Description = race.Description,
-                AddressId = race.AddressId,
-                Address = race.Address,
+                Title = race.Title!,
+                Description = race.Description!,
+                AddressId = race.AddressId!,
+                Address = race.Address!,
                 Url = race.Image,
                 RaceCategory = race.RaceCategory
             };
@@ -105,14 +105,14 @@ namespace RunGroupWebApp.Controllers
             {
                 try
                 {
-                    await _photoService.DeletePhotoAsync(userRace.Image);
+                    await _photoService.DeletePhotoAsync(userRace.Image!);
                 }
                 catch (Exception ex)
                 {
                     ModelState.AddModelError("", ex.Message);
                     return View(raceVM);
                 }
-                var photoResult = await _photoService.AddPhotoAsync(raceVM.Image);
+                var photoResult = await _photoService.AddPhotoAsync(raceVM.Image!);
                 
                 var race = new Race
                 {

@@ -19,20 +19,24 @@ namespace RunGroupWebApp.Controllers
         }
         public ActionResult Login()
         {
-            var response = new LoginViewModel();
+            var response = new LoginViewModel
+            {
+                Email = null,
+                Password = null
+            };
             return View(response);
         }
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel LoginViewModel)
         {
             if (!ModelState.IsValid) return View(LoginViewModel);
-            var user = await _userManager.FindByEmailAsync(LoginViewModel.Email);
+            var user = await _userManager.FindByEmailAsync(LoginViewModel.Email!);
             if(user != null)
             {
-                var passwordCheck = await _userManager.CheckPasswordAsync(user,LoginViewModel.Password);
+                var passwordCheck = await _userManager.CheckPasswordAsync(user,LoginViewModel.Password!);
                 if (passwordCheck)
                 {
-                    var result = await _signInManager.PasswordSignInAsync(user, LoginViewModel.Password,false,false);
+                    var result = await _signInManager.PasswordSignInAsync(user, LoginViewModel.Password!,false,false);
                     if (result.Succeeded)
                     {
                         return RedirectToAction("Index","Race");
@@ -45,14 +49,19 @@ namespace RunGroupWebApp.Controllers
 
         public ActionResult Register()
         {
-            var response = new RegisterViewModel();
+            var response = new RegisterViewModel
+            {
+                Email = null,
+                Password = null
+            };
+
             return View(response);
         }
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
         {
             if(!ModelState.IsValid) return View(registerViewModel);
-            var checkUser = await _userManager.FindByEmailAsync(registerViewModel.Email);
+            var checkUser = await _userManager.FindByEmailAsync(registerViewModel.Email!);
             if(checkUser != null)
             {
                 ModelState.AddModelError("Email", "This email already exists.");
@@ -63,7 +72,7 @@ namespace RunGroupWebApp.Controllers
                 Email= registerViewModel.Email,
                 UserName = registerViewModel.Email
             };
-            var newResponse  = await _userManager.CreateAsync(newUser, registerViewModel.Password);
+            var newResponse  = await _userManager.CreateAsync(newUser, registerViewModel.Password!);
             if (newResponse.Succeeded)
             {
                 await _userManager.AddToRoleAsync(newUser, UserRoles.User);

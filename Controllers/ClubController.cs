@@ -62,12 +62,12 @@ namespace RunGroupWebApp.Controllers
 
             var club = new Club
             {
-                Title = clubVM.Title,
+                Title = clubVM.Title!,
                 Description = clubVM.Description,
                 AppUserId = clubVM.AppUserId,
                 Address = new Address
                 {
-                    Street = clubVM.Address.Street,
+                    Street = clubVM.Address!.Street,
                     City = clubVM.Address.City,
                     State = clubVM.Address.State
                 },
@@ -107,18 +107,18 @@ namespace RunGroupWebApp.Controllers
             {
                 try
                 {
-                    await _photoService.DeletePhotoAsync(userCLub.Image);
+                    await _photoService.DeletePhotoAsync(userCLub.Image!);
                 }
                 catch (Exception ex)
                 {
                     ModelState.AddModelError("", ex.Message);
                     return View(clubVM);
                 }
-                var photoResult = await _photoService.AddPhotoAsync(clubVM.Image);
+                var photoResult = await _photoService.AddPhotoAsync(clubVM.Image!);
                 var club = new Club
                 {
                     Id = id,
-                    Title = clubVM.Title,
+                    Title = clubVM.Title!,
                     Description = clubVM.Description,
                     AddressId = clubVM.AddressId,
                     Address = clubVM.Address,
